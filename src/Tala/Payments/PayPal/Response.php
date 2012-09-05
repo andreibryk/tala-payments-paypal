@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Tala\Payments\Response;
+namespace Tala\Payments\PayPal;
 
 /**
  * PayPal Express Class
  */
-class PayPalResponse extends Response
+class Response extends \Tala\Payments\Response
 {
 
-    public function __construct($data)
+    public function __construct($responseData)
     {
         // find the reference
         $gatewayReference = null;
         foreach (array('REFUNDTRANSACTIONID', 'TRANSACTIONID', 'PAYMENTINFO_0_TRANSACTIONID') as $key) {
-            if (isset($data[$key])) {
-                $gatewayReference = $data[$key];
+            if (isset($responseData[$key])) {
+                $gatewayReference = $responseData[$key];
                 break;
             }
         }

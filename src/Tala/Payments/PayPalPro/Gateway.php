@@ -9,22 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Tala\Payments\Gateway;
+namespace Tala\Payments\PayPalPro;
 
+use Tala\Payments\PayPal\AbstractGateway;
 use Tala\Payments\Request;
-use Tala\Payments\Response\PayPalResponse;
+use Tala\Payments\PayPal\Response;
 
 /**
  * PayPal Pro Class
  */
-class PayPalPro extends PayPalBase
+class Gateway extends AbstractGateway
 {
     public function authorize(Request $request)
     {
         $data = $this->buildAuthorize($request, 'Authorization');
         $response = $this->send($data);
 
-        return new PayPalResponse($response);
+        return new Response($response);
     }
 
     public function purchase(Request $request)
@@ -32,7 +33,7 @@ class PayPalPro extends PayPalBase
         $data = $this->buildAuthorize($request, 'Sale');
         $response = $this->send($data);
 
-        return new PayPalResponse($response);
+        return new Response($response);
     }
 
     protected function buildAuthorize($request, $action)

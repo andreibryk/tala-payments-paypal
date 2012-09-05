@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Tala\Payments\Gateway;
+namespace Tala\Payments\PayPal;
 
-use Tala\Payments\Exception\InvalidResponse;
-use Tala\Payments\Exception\PayPalException;
+use Tala\Payments\Exception\InvalidResponseException;
+use Tala\Payments\PayPal\Exception;
+use Tala\Payments\PayPal\Response;
 use Tala\Payments\Request;
 
 /**
  * PayPal Base Class
  */
-abstract class PayPalBase extends Base
+abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 {
     protected $endpoint = 'https://api-3t.paypal.com/nvp';
     protected $testEndpoint = 'https://api-3t.sandbox.paypal.com/nvp';
@@ -45,7 +46,7 @@ abstract class PayPalBase extends Base
         $data = $this->buildCapture($request);
         $response = $this->send($data);
 
-        return new Merchant_paypal_api_response($response, Merchant_response::COMPLETE);
+        return new Response($response);
     }
 
     public function refund(Request $request)
@@ -53,7 +54,7 @@ abstract class PayPalBase extends Base
         $request = $this->_build_refund();
         $response = $this->send($request);
 
-        return new Merchant_paypal_api_response($response, Merchant_response::REFUNDED);
+        return new Response($response);
     }
 
     protected function buildCapture(Request $request)
@@ -120,10 +121,10 @@ abstract class PayPalBase extends Base
         if (isset($response_vars['ACK']) and in_array($response_vars['ACK'], array('Success', 'SuccessWithWarning'))) {
             return $response_vars;
         } elseif (isset($response_vars['L_LONGMESSAGE0'])) {
-            throw new PayPalException($response_vars);
+            throw new Exception($response_vars);
         }
 
-        throw new InvalidResponse();
+        throw new InvalidResponseException();
     }
 
     protected function getCurentEndpoint()

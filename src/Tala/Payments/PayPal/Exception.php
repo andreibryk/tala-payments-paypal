@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tala\Payments\Exception;
-
-use Tala\Payments\Exception;
+namespace Tala\Payments\PayPal;
 
 /**
  * Invalid Response exception.
@@ -20,10 +18,10 @@ use Tala\Payments\Exception;
  *
  * @author  Adrian Macneil <adrian.macneil@gmail.com>
  */
-class PayPalException extends \RuntimeException implements Exception
+class Exception extends \RuntimeException implements \Tala\Payments\Exception
 {
-    public function __construct($response)
+    public function __construct($responseData)
     {
-        parent::__construct($response['L_LONGMESSAGE0'], $response['L_ERRORCODE0']);
+        parent::__construct($responseData['L_LONGMESSAGE0'], $responseData['L_ERRORCODE0']);
     }
 }

@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Tala\Payments\Gateway;
+namespace Tala\Payments\PayPalExpress;
 
-use Tala\Payments\Response\PayPalResponse;
-use Tala\Payments\Response\RedirectResponse;
+use Tala\Payments\PayPal\AbstractGateway;
+use Tala\Payments\PayPal\Response;
+use Tala\Payments\RedirectResponse;
 use Tala\Payments\Request;
 
 /**
  * PayPal Express Class
  */
-class PayPalExpress extends PayPalBase
+class Gateway extends AbstractGateway
 {
     protected $solutionType;
     protected $landingPage;
@@ -48,7 +49,7 @@ class PayPalExpress extends PayPalBase
     {
         $data = $this->confirmReturn($request, 'Authorization');
 
-        return new PayPalResponse($data);
+        return new Response($data);
     }
 
     public function purchase(Request $request)
@@ -61,7 +62,7 @@ class PayPalExpress extends PayPalBase
     {
         $data = $this->confirmReturn($request, 'Sale');
 
-        return new PayPalResponse($data);
+        return new Response($data);
     }
 
     protected function buildAuthorize(Request $request)
