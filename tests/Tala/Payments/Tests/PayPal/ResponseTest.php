@@ -1,0 +1,41 @@
+<?php
+
+/*
+ * This file is part of the Tala Payments package.
+ *
+ * (c) Adrian Macneil <adrian.macneil@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Tala\Payments\Tests\PayPal;
+
+use Tala\Payments\PayPal\Response;
+
+class ResponseTest extends \PHPUnit_Framework_TestCase
+{
+    public function testConstructEmpty()
+    {
+        $response = new Response(array());
+        $this->assertNull($response->getGatewayReference());
+    }
+
+    public function testConstructRefundTransactionId()
+    {
+        $response = new Response(array('REFUNDTRANSACTIONID' => '11111'));
+        $this->assertEquals('11111', $response->getGatewayReference());
+    }
+
+    public function testConstructTransactionId()
+    {
+        $response = new Response(array('TRANSACTIONID' => '22222'));
+        $this->assertEquals('22222', $response->getGatewayReference());
+    }
+
+    public function testConstructPaymentTransactionId()
+    {
+        $response = new Response(array('PAYMENTINFO_0_TRANSACTIONID' => '33333'));
+        $this->assertEquals('33333', $response->getGatewayReference());
+    }
+}

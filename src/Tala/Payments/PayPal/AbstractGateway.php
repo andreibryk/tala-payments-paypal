@@ -111,8 +111,7 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
     protected function send($data)
     {
         // send and decode response
-        $browser = new \Buzz\Browser();
-        $response = $browser->get($this->getCurentEndpoint().'?'.http_build_query($data));
+        $response = $this->getBrowser()->get($this->getCurentEndpoint().'?'.http_build_query($data));
 
         $response_vars = array();
         parse_str($response->getContent(), $response_vars);
