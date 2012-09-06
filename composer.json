@@ -1,8 +1,8 @@
 {
     "name": "tala/tala-payments-paypal",
     "type": "library",
-    "description": "PayPal payment gateway for Tala Payments",
-    "keywords": ["payment", "merchant", "gateway"],
+    "description": "PayPal payment processing based on the Tala Payments library",
+    "keywords": ["paypal", "payment", "payments", "merchant", "gateway"],
     "homepage": "https://github.com/adrianmacneil/tala-payments-paypal",
     "license": "MIT",
     "authors": [
@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/http-foundation": "2.0.*",
+        "tala/tala-payments-core": "dev-master",
         "kriswallsmith/buzz": "0.7"
     },
     "autoload": {
