@@ -38,6 +38,8 @@ class Gateway extends AbstractGateway
 
     protected function buildAuthorize($request, $action)
     {
+        $request->validateRequiredParams(array('amount', 'source'));
+
         $card = $request->getSource();
         $card->validateNumber();
         $card->validateRequiredParams(array('number', 'firstName', 'lastName', 'expiryMonth', 'expiryYear', 'cvv'));

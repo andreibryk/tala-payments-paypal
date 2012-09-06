@@ -59,7 +59,7 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
     protected function buildCapture(Request $request)
     {
-        $request->validateRequiredParams(array('reference', 'amount'));
+        $request->validateRequiredParams(array('gatewayReference', 'amount'));
 
         $data = $this->buildRequest('DoCapture');
         $data['AMT'] = $request->getAmountDollars();
@@ -72,10 +72,10 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
     protected function buildRefund(Request $request)
     {
-        $request->validateRequiredParams(array('reference'));
+        $request->validateRequiredParams(array('gatewayReference'));
 
         $data = $this->buildRequest('RefundTransaction');
-        $data['TRANSACTIONID'] = $this->param('reference');
+        $data['TRANSACTIONID'] = $request->getGatewayReference();
         $data['REFUNDTYPE'] = 'Full';
 
         return $data;

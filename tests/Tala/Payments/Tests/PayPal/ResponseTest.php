@@ -38,4 +38,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $response = new Response(array('PAYMENTINFO_0_TRANSACTIONID' => '33333'));
         $this->assertEquals('33333', $response->getGatewayReference());
     }
+
+    public function testConstructData()
+    {
+        $data = array('example' => 'value');
+        $response = new Response($data);
+        $this->assertEquals($data, $response->getData());
+    }
 }

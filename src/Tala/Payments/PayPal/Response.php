@@ -16,18 +16,16 @@ namespace Tala\Payments\PayPal;
  */
 class Response extends \Tala\Payments\Response
 {
-
     public function __construct($responseData)
     {
+        $this->data = $responseData;
+
         // find the reference
-        $gatewayReference = null;
         foreach (array('REFUNDTRANSACTIONID', 'TRANSACTIONID', 'PAYMENTINFO_0_TRANSACTIONID') as $key) {
-            if (isset($responseData[$key])) {
-                $gatewayReference = $responseData[$key];
+            if (isset($this->data[$key])) {
+                $this->gatewayReference = $this->data[$key];
                 break;
             }
         }
-
-        parent::__construct($gatewayReference);
     }
 }

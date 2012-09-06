@@ -10,6 +10,16 @@
          stopOnFailure="false"
          syntaxCheck="false"
 >
+    <php>
+        <server name="PAYPAL_USERNAME" value="" />
+        <server name="PAYPAL_PASSWORD" value="" />
+        <server name="PAYPAL_SIGNATURE" value="" />
+        <server name="PAYPAL_TEST_MODE" value="1" />
+        <server name="CARD_NUMBER" value="" />
+        <server name="CARD_EXP_MONTH" value="" />
+        <server name="CARD_EXP_YEAR" value="" />
+        <server name="CARD_CVV" value="" />
+    </php>
     <testsuites>
         <testsuite name="Tala Payments PayPal Test Suite">
             <directory>./tests/</directory>
