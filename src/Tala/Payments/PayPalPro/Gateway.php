@@ -38,31 +38,31 @@ class Gateway extends AbstractGateway
 
     protected function buildAuthorize($request, $action)
     {
-        $request->validateRequiredParams(array('amount', 'source'));
+        $request->validateRequired(array('amount', 'source'));
 
-        $card = $request->getSource();
-        $card->validateNumber();
-        $card->validateRequiredParams(array('number', 'firstName', 'lastName', 'expiryMonth', 'expiryYear', 'cvv'));
+        $card = $request->source;
+        $card->validateNumber;
+        $card->validateRequired(array('number', 'firstName', 'lastName', 'expiryMonth', 'expiryYear', 'cvv'));
 
         $data = $this->buildPaymentRequest($request, 'DoDirectPayment', $action);
 
         // add credit card details
-        $data['CREDITCARDTYPE'] = $card->getType();
-        $data['ACCT'] = $card->getNumber();
-        $data['EXPDATE'] = $card->getExpiryMonth().$card->getExpiryYear();
-        $data['STARTDATE'] = $card->getStartMonth().$card->getStartYear();
-        $data['CVV2'] = $card->getCvv();
-        $data['ISSUENUMBER'] = $card->getIssue();
+        $data['CREDITCARDTYPE'] = $card->type;
+        $data['ACCT'] = $card->number;
+        $data['EXPDATE'] = $card->expiryMonth.$card->expiryYear;
+        $data['STARTDATE'] = $card->startMonth.$card->startYear;
+        $data['CVV2'] = $card->cvv;
+        $data['ISSUENUMBER'] = $card->issue;
         $data['IPADDRESS'] = '';
-        $data['FIRSTNAME'] = $card->getFirstName();
-        $data['LASTNAME'] = $card->getLastName();
-        $data['EMAIL'] = $card->getEmail();
-        $data['STREET'] = $card->getAddress1();
-        $data['STREET2'] = $card->getAddress2();
-        $data['CITY'] = $card->getCity();
-        $data['STATE'] = $card->getState();
-        $data['ZIP'] = $card->getPostcode();
-        $data['COUNTRYCODE'] = strtoupper($card->getCountry());
+        $data['FIRSTNAME'] = $card->firstName;
+        $data['LASTNAME'] = $card->lastName;
+        $data['EMAIL'] = $card->email;
+        $data['STREET'] = $card->address1;
+        $data['STREET2'] = $card->address2;
+        $data['CITY'] = $card->city;
+        $data['STATE'] = $card->state;
+        $data['ZIP'] = $card->postcode;
+        $data['COUNTRYCODE'] = strtoupper($card->country);
 
         return $data;
     }

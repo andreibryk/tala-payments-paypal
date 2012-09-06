@@ -67,7 +67,7 @@ class Gateway extends AbstractGateway
 
     protected function buildAuthorize(Request $request)
     {
-        $request->validateRequiredParams(array('returnUrl', 'cancelUrl'));
+        $request->validateRequired(array('returnUrl', 'cancelUrl'));
 
         $prefix = 'PAYMENTREQUEST_0_';
         $data = $this->buildPaymentRequest($request, 'SetExpressCheckout', 'Authorization', $prefix);
@@ -77,19 +77,19 @@ class Gateway extends AbstractGateway
         $data['LANDINGPAGE'] = $this->getLandingPage();
         $data['NOSHIPPING'] = 1;
         $data['ALLOWNOTE'] = 0;
-        $data['RETURNURL'] = $request->getReturnUrl();
-        $data['CANCELURL'] = $request->getCancelUrl();
+        $data['RETURNURL'] = $request->returnUrl;
+        $data['CANCELURL'] = $request->cancelUrl;
 
-        $card = $request->getSource();
-        $data[$prefix.'SHIPTONAME'] = $card->getName();
-        $data[$prefix.'SHIPTOSTREET'] = $card->getAddress1();
-        $data[$prefix.'SHIPTOSTREET2'] = $card->getAddress2();
-        $data[$prefix.'SHIPTOCITY'] = $card->getCity();
-        $data[$prefix.'SHIPTOSTATE'] = $card->getState();
-        $data[$prefix.'SHIPTOCOUNTRYCODE'] = $card->getCountry();
-        $data[$prefix.'SHIPTOZIP'] = $card->getPostcode();
-        $data[$prefix.'SHIPTOPHONENUM'] = $card->getPhone();
-        $data['EMAIL'] = $card->getEmail();
+        $card = $request->source;
+        $data[$prefix.'SHIPTONAME'] = $card->name;
+        $data[$prefix.'SHIPTOSTREET'] = $card->address1;
+        $data[$prefix.'SHIPTOSTREET2'] = $card->address2;
+        $data[$prefix.'SHIPTOCITY'] = $card->city;
+        $data[$prefix.'SHIPTOSTATE'] = $card->state;
+        $data[$prefix.'SHIPTOCOUNTRYCODE'] = $card->country;
+        $data[$prefix.'SHIPTOZIP'] = $card->postcode;
+        $data[$prefix.'SHIPTOPHONENUM'] = $card->phone;
+        $data['EMAIL'] = $card->email;
 
         return $data;
     }

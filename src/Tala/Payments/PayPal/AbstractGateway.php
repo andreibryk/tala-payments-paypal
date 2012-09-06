@@ -59,12 +59,12 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
     protected function buildCapture(Request $request)
     {
-        $request->validateRequiredParams(array('gatewayReference', 'amount'));
+        $request->validateRequired(array('gatewayReference', 'amount'));
 
         $data = $this->buildRequest('DoCapture');
-        $data['AMT'] = $request->getAmountDollars();
-        $data['CURRENCYCODE'] = $request->getCurrency() ?: $this->getCurrency();
-        $data['AUTHORIZATIONID'] = $request->getGatewayReference();
+        $data['AMT'] = $request->amountDollars;
+        $data['CURRENCYCODE'] = $request->currency ?: $this->getCurrency();
+        $data['AUTHORIZATIONID'] = $request->gatewayReference;
         $data['COMPLETETYPE'] = 'Complete';
 
         return $data;
@@ -72,10 +72,10 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
     protected function buildRefund(Request $request)
     {
-        $request->validateRequiredParams(array('gatewayReference'));
+        $request->validateRequired(array('gatewayReference'));
 
         $data = $this->buildRequest('RefundTransaction');
-        $data['TRANSACTIONID'] = $request->getGatewayReference();
+        $data['TRANSACTIONID'] = $request->gatewayReference;
         $data['REFUNDTYPE'] = 'Full';
 
         return $data;
@@ -98,9 +98,9 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
         $data = $this->buildRequest($method);
 
         $data[$prefix.'PAYMENTACTION'] = $action;
-        $data[$prefix.'AMT'] = $request->getAmountDollars();
-        $data[$prefix.'CURRENCYCODE'] = $request->getCurrency() ?: $this->getCurrency();
-        $data[$prefix.'DESC'] = $request->getDescription();
+        $data[$prefix.'AMT'] = $request->amountDollars;
+        $data[$prefix.'CURRENCYCODE'] = $request->currency ?: $this->getCurrency();
+        $data[$prefix.'DESC'] = $request->description;
 
         return $data;
     }

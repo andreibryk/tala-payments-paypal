@@ -36,8 +36,8 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->request = new Request();
-        $this->request->setSource($this->card);
-        $this->request->setAmount(1000);
+        $this->request->source = $this->card;
+        $this->request->amount = 1000;
     }
 
     protected function getMockBrowser()
@@ -57,17 +57,17 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthorizeRequiresAmount()
     {
-        $this->setExpectedException('\Tala\Payments\Exception\InvalidRequestException', 'The amount parameter is required');
+        $this->setExpectedException('\Tala\Payments\Exception\MissingParameterException', 'The amount parameter is required');
 
-        $this->request->setAmount(0);
+        $this->request->amount = 0;
         $response = $this->gateway->authorize($this->request);
     }
 
     public function testAuthorizeRequiresSource()
     {
-        $this->setExpectedException('\Tala\Payments\Exception\InvalidRequestException', 'The source parameter is required');
+        $this->setExpectedException('\Tala\Payments\Exception\MissingParameterException', 'The source parameter is required');
 
-        $this->request->setSource(null);
+        $this->request->source = null;
         $response = $this->gateway->authorize($this->request);
     }
 
@@ -93,16 +93,16 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizeCaptureRemote()
     {
         $authRequest = new Request();
-        $authRequest->setSource($this->card);
-        $authRequest->setAmount(1100);
+        $authRequest->source = $this->card;
+        $authRequest->amount = 1100;
         $authResponse = $this->gateway->authorize($authRequest);
 
         $this->assertInstanceOf('\Tala\Payments\ResponseInterface', $authResponse);
         $this->assertNotEmpty($authResponse->getGatewayReference());
 
         $captureRequest = new Request();
-        $captureRequest->setGatewayReference($authResponse->getGatewayReference());
-        $captureRequest->setAmount(1100);
+        $captureRequest->gatewayReference = $authResponse->getGatewayReference();
+        $captureRequest->amount = 1100;
         $captureResponse = $this->gateway->capture($captureRequest);
 
         $this->assertInstanceOf('\Tala\Payments\ResponseInterface', $captureResponse);
@@ -115,8 +115,8 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public function testPurchaseRemote()
     {
         $purchaseRequest = new Request();
-        $purchaseRequest->setSource($this->card);
-        $purchaseRequest->setAmount(1300);
+        $purchaseRequest->source = $this->card;
+        $purchaseRequest->amount = 1300;
         $purchaseResponse = $this->gateway->purchase($purchaseRequest);
 
         $this->assertInstanceOf('\Tala\Payments\ResponseInterface', $purchaseResponse);
