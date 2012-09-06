@@ -20,49 +20,48 @@ use Tala\Payments\PayPal\Response;
  */
 class Gateway extends AbstractGateway
 {
-    public function authorize(Request $request)
+    public function authorize(Request $request, $source)
     {
-        $data = $this->buildAuthorize($request, 'Authorization');
+        $data = $this->buildAuthorize($request, $source, 'Authorization');
         $response = $this->send($data);
 
         return new Response($response);
     }
 
-    public function purchase(Request $request)
+    public function purchase(Request $request, $source)
     {
-        $data = $this->buildAuthorize($request, 'Sale');
+        $data = $this->buildAuthorize($request, $source, 'Sale');
         $response = $this->send($data);
 
         return new Response($response);
     }
 
-    protected function buildAuthorize($request, $action)
+    protected function buildAuthorize($request, $source, $action)
     {
-        $request->validateRequired(array('amount', 'source'));
+        $request->validateRequired('amount');
 
-        $card = $request->source;
-        $card->validateNumber;
-        $card->validateRequired(array('number', 'firstName', 'lastName', 'expiryMonth', 'expiryYear', 'cvv'));
+        $source->validateRequired(array('number', 'firstName', 'lastName', 'expiryMonth', 'expiryYear', 'cvv'));
+        $source->validateNumber;
 
         $data = $this->buildPaymentRequest($request, 'DoDirectPayment', $action);
 
         // add credit card details
-        $data['CREDITCARDTYPE'] = $card->type;
-        $data['ACCT'] = $card->number;
-        $data['EXPDATE'] = $card->expiryMonth.$card->expiryYear;
-        $data['STARTDATE'] = $card->startMonth.$card->startYear;
-        $data['CVV2'] = $card->cvv;
-        $data['ISSUENUMBER'] = $card->issue;
+        $data['CREDITCARDTYPE'] = $source->type;
+        $data['ACCT'] = $source->number;
+        $data['EXPDATE'] = $source->expiryMonth.$source->expiryYear;
+        $data['STARTDATE'] = $source->startMonth.$source->startYear;
+        $data['CVV2'] = $source->cvv;
+        $data['ISSUENUMBER'] = $source->issue;
         $data['IPADDRESS'] = '';
-        $data['FIRSTNAME'] = $card->firstName;
-        $data['LASTNAME'] = $card->lastName;
-        $data['EMAIL'] = $card->email;
-        $data['STREET'] = $card->address1;
-        $data['STREET2'] = $card->address2;
-        $data['CITY'] = $card->city;
-        $data['STATE'] = $card->state;
-        $data['ZIP'] = $card->postcode;
-        $data['COUNTRYCODE'] = strtoupper($card->country);
+        $data['FIRSTNAME'] = $source->firstName;
+        $data['LASTNAME'] = $source->lastName;
+        $data['EMAIL'] = $source->email;
+        $data['STREET'] = $source->address1;
+        $data['STREET2'] = $source->address2;
+        $data['CITY'] = $source->city;
+        $data['STATE'] = $source->state;
+        $data['ZIP'] = $source->postcode;
+        $data['COUNTRYCODE'] = strtoupper($source->country);
 
         return $data;
     }

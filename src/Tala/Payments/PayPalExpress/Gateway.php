@@ -33,9 +33,9 @@ class Gateway extends AbstractGateway
         return $settings;
     }
 
-    public function authorize(Request $request)
+    public function authorize(Request $request, $source)
     {
-        $data = $this->buildAuthorize($request);
+        $data = $this->buildAuthorize($request, $source);
         $response = $this->send($data);
 
         return new RedirectResponse($this->getCurrentCheckoutEndpoint().'?'.http_build_query(array(
@@ -52,10 +52,10 @@ class Gateway extends AbstractGateway
         return new Response($data);
     }
 
-    public function purchase(Request $request)
+    public function purchase(Request $request, $source)
     {
         // authorize first then process as 'Sale' in DoExpressCheckoutPayment
-        $this->authorize($request);
+        $this->authorize($request, $source);
     }
 
     public function completePurchase(Request $request)
@@ -65,7 +65,7 @@ class Gateway extends AbstractGateway
         return new Response($data);
     }
 
-    protected function buildAuthorize(Request $request)
+    protected function buildAuthorize(Request $request, $source)
     {
         $request->validateRequired(array('returnUrl', 'cancelUrl'));
 
@@ -80,16 +80,15 @@ class Gateway extends AbstractGateway
         $data['RETURNURL'] = $request->returnUrl;
         $data['CANCELURL'] = $request->cancelUrl;
 
-        $card = $request->source;
-        $data[$prefix.'SHIPTONAME'] = $card->name;
-        $data[$prefix.'SHIPTOSTREET'] = $card->address1;
-        $data[$prefix.'SHIPTOSTREET2'] = $card->address2;
-        $data[$prefix.'SHIPTOCITY'] = $card->city;
-        $data[$prefix.'SHIPTOSTATE'] = $card->state;
-        $data[$prefix.'SHIPTOCOUNTRYCODE'] = $card->country;
-        $data[$prefix.'SHIPTOZIP'] = $card->postcode;
-        $data[$prefix.'SHIPTOPHONENUM'] = $card->phone;
-        $data['EMAIL'] = $card->email;
+        $data[$prefix.'SHIPTONAME'] = $source->name;
+        $data[$prefix.'SHIPTOSTREET'] = $source->address1;
+        $data[$prefix.'SHIPTOSTREET2'] = $source->address2;
+        $data[$prefix.'SHIPTOCITY'] = $source->city;
+        $data[$prefix.'SHIPTOSTATE'] = $source->state;
+        $data[$prefix.'SHIPTOCOUNTRYCODE'] = $source->country;
+        $data[$prefix.'SHIPTOZIP'] = $source->postcode;
+        $data[$prefix.'SHIPTOPHONENUM'] = $source->phone;
+        $data['EMAIL'] = $source->email;
 
         return $data;
     }

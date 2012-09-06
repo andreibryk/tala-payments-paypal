@@ -42,11 +42,10 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public function testAuthorizeRemote()
     {
         $request = new Request();
-        $request->source = $this->card;
         $request->amount = 1000;
         $request->cancelUrl = 'https://www.example.com/checkout';
         $request->returnUrl = 'https://www.example.com/complete';
-        $response = $this->gateway->authorize($request);
+        $response = $this->gateway->authorize($request, $this->card);
 
         $this->assertInstanceOf('\Tala\Payments\RedirectResponse', $response);
         $this->assertNotEmpty($response->getRedirectUrl());
