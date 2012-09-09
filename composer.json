@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "tala/tala-payments-core": "0.0.*"
+        "tala/tala-payments-core": ">=0.0.3"
     },
     "autoload": {
         "psr-0" : {
