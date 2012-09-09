@@ -11,10 +11,10 @@
          syntaxCheck="false"
 >
     <php>
-        <env name="PAYPAL_USERNAME" value="" />
-        <env name="PAYPAL_PASSWORD" value="" />
-        <env name="PAYPAL_SIGNATURE" value="" />
-        <env name="PAYPAL_TEST_MODE" value="1" />
+        <env name="GATEWAY_USERNAME" value="" />
+        <env name="GATEWAY_PASSWORD" value="" />
+        <env name="GATEWAY_SIGNATURE" value="" />
+        <env name="GATEWAY_TEST_MODE" value="1" />
         <env name="CARD_NUMBER" value="2222222222222222" />
         <env name="CARD_EXP_MONTH" value="12" />
         <env name="CARD_EXP_YEAR" value="15" />

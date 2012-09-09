@@ -20,10 +20,10 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->gateway = new Gateway(array(
-            'username' => getenv('PAYPAL_USERNAME'),
-            'password' => getenv('PAYPAL_PASSWORD'),
-            'signature' => getenv('PAYPAL_SIGNATURE'),
-            'testMode' => (bool) getenv('PAYPAL_TEST_MODE'),
+            'username' => getenv('GATEWAY_USERNAME'),
+            'password' => getenv('GATEWAY_PASSWORD'),
+            'signature' => getenv('GATEWAY_SIGNATURE'),
+            'testMode' => (bool) getenv('GATEWAY_TEST_MODE'),
         ));
 
         $this->card = new CreditCard(array(
