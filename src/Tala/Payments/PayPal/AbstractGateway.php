@@ -63,7 +63,7 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
         $data = $this->buildRequest('DoCapture');
         $data['AMT'] = $request->amountDollars;
-        $data['CURRENCYCODE'] = $request->currency ?: $this->getCurrency();
+        $data['CURRENCYCODE'] = $request->currency;
         $data['AUTHORIZATIONID'] = $request->gatewayReference;
         $data['COMPLETETYPE'] = 'Complete';
 
@@ -99,7 +99,7 @@ abstract class AbstractGateway extends \Tala\Payments\AbstractGateway
 
         $data[$prefix.'PAYMENTACTION'] = $action;
         $data[$prefix.'AMT'] = $request->amountDollars;
-        $data[$prefix.'CURRENCYCODE'] = $request->currency ?: $this->getCurrency();
+        $data[$prefix.'CURRENCYCODE'] = $request->currency;
         $data[$prefix.'DESC'] = $request->description;
 
         return $data;
